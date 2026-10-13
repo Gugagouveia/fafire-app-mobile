@@ -33,8 +33,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
     "check": "npm run typecheck && npm test",
-    "format": "prettier --write App.tsx index.ts metro.config.js src tests docs README.md *.json .github/workflows/validate.yml",
-    "format:check": "prettier --check App.tsx index.ts metro.config.js src tests docs README.md *.json .github/workflows/validate.yml"
+    "format": "prettier --write App.tsx index.ts metro.config.js src tests README.md *.json .github/workflows/validate.yml",
+    "format:check": "prettier --check App.tsx index.ts metro.config.js src tests README.md *.json .github/workflows/validate.yml"
   },
   "private": true,
   "description": "Aplicativo móvel de produtividade estudantil — Gustavo Gouveia / FAFIRE"
