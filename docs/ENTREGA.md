@@ -16,6 +16,7 @@ O Estuda+ é um aplicativo móvel Android/iOS para organizar tarefas acadêmicas
 
 ## Materiais
 
+- Pacote local `entrega/estuda-mais-gustavo-gouveia.zip`: código e documentação, sem dependências instaladas ou credenciais.
 - Código-fonte e `package-lock.json` no repositório.
 - Documentos desta pasta e `README.md`.
 - `wireframes.svg`: pode ser aberto no navegador e impresso em PDF.
