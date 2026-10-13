@@ -36,6 +36,9 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# Example repository downloaded only for consultation
+/reference/
+
 # generated native folders
 /ios
 /android

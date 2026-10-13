@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Estuda+ · Protótipo navegável</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #e8ecf4;
+        color: #17233b;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button,
+      a,
+      input,
+      select,
+      textarea {
+        outline-offset: 4px;
+      }
+      button {
+        cursor: pointer;
+        min-height: 48px;
+        border: 0;
+        border-radius: 13px;
+        padding: 13px 17px;
+        background: #4055d8;
+        color: white;
+        font-weight: 700;
+      }
+      button:disabled {
+        opacity: 0.6;
+      }
+      .secondary {
+        background: #eef0ff;
+        color: #4055d8;
+      }
+      .danger {
+        background: #b3263c;
+      }
+      .intro {
+        max-width: 1050px;
+        margin: 28px auto;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .intro p {
+        color: #5e6a80;
+        max-width: 620px;
+        line-height: 1.6;
+        font-size: 14px;
+      }
+      .intro h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+      .shell {
+        background: #f5f6fa;
+        max-width: 430px;
+        min-height: 780px;
+        margin: 20px auto 40px;
+        border: 8px solid #17233b;
+        border-radius: 40px;
+        box-shadow: 0 22px 60px #17233b20;
+        overflow: hidden;
+        position: relative;
+      }
+      .status {
+        display: flex;
+        justify-content: space-between;
+        padding: 16px 24px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .screen {
+        padding: 14px 22px 28px;
+        display: none;
+        min-height: 655px;
+      }
+      .screen.visible {
+        display: block;
+      }
+      .brand {
+        font-size: 23px;
+        font-weight: 800;
+        color: #4055d8;
+        margin: 22px 0 28px;
+      }
+      .eyebrow {
+        color: #4055d8;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+      }
+      h2 {
+        font-size: 29px;
+        line-height: 1.18;
+        letter-spacing: -0.6px;
+        margin: 12px 0;
+      }
+      h3 {
+        font-size: 18px;
+        margin: 0 0 14px;
+      }
+      p {
+        font-size: 15px;
+        color: #5e6a80;
+        line-height: 1.6;
+        margin: 10px 0 18px;
+      }
+      .card {
+        background: white;
+        border: 1px solid #dde2ef;
+        border-radius: 20px;
+        padding: 20px;
+        margin: 18px 0;
+      }
+      .card button {
+        width: 100%;
+        margin-top: 10px;
+      }
+      .form {
+        display: grid;
+        gap: 14px;
+      }
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        display: grid;
+        gap: 8px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #dde2ef;
+        border-radius: 12px;
+        background: white;
+        color: #17233b;
+        padding: 13px;
+        min-height: 50px;
+      }
+      textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+      .hero {
+        background: #4055d8;
+        border-color: #4055d8;
+        color: white;
+        padding: 24px;
+      }
+      .hero p {
+        color: white;
+      }
+      .hero strong {
+        font-size: 44px;
+        display: block;
+        margin: 10px 0;
+      }
+      .progress {
+        height: 7px;
+        background: #273baf;
+        border-radius: 7px;
+        overflow: hidden;
+      }
+      .progress div {
+        height: 7px;
+        background: #bde5cb;
+      }
+      .stats {
+        display: flex;
+        gap: 10px;
+      }
+      .stat {
+        background: white;
+        border: 1px solid #dde2ef;
+        flex: 1;
+        border-radius: 16px;
+        padding: 15px 10px;
+        font-size: 12px;
+        color: #5e6a80;
+      }
+      .stat strong {
+        display: block;
+        font-size: 26px;
+        color: #4055d8;
+        margin-bottom: 7px;
+      }
+      .wide {
+        width: 100%;
+        margin: 18px 0;
+      }
+      .task {
+        width: 100%;
+        text-align: left;
+        background: white;
+        color: #17233b;
+        border: 1px solid #dde2ef;
+        border-radius: 18px;
+        padding: 18px;
+        margin: 8px 0;
+      }
+      .task span {
+        display: block;
+        font-size: 13px;
+        color: #5e6a80;
+        font-weight: 400;
+        margin-top: 7px;
+      }
+      .chips {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+        margin: 14px 0;
+      }
+      .chips button {
+        background: white;
+        color: #5e6a80;
+        border: 1px solid #dde2ef;
+        border-radius: 24px;
+        font-size: 13px;
+        min-height: 44px;
+        padding: 10px 13px;
+      }
+      .chips button.active {
+        background: #4055d8;
+        color: white;
+      }
+      .back {
+        background: transparent;
+        color: #4055d8;
+        padding: 5px 0;
+        margin-bottom: 12px;
+      }
+      .bottom {
+        display: flex;
+        background: white;
+        border-top: 1px solid #dde2ef;
+        padding: 8px 4px 16px;
+        position: sticky;
+        bottom: 0;
+      }
+      .bottom button {
+        flex: 1;
+        font-size: 11px;
+        border-radius: 10px;
+        min-height: 54px;
+        background: transparent;
+        color: #5e6a80;
+        padding: 8px 3px;
+      }
+      .bottom span {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+      .bottom .active {
+        color: #4055d8;
+        background: #eef0ff;
+      }
+      .hide {
+        display: none;
+      }
+      .avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 24px;
+        background: #eef0ff;
+        color: #4055d8;
+        font-size: 32px;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 16px;
+        font-weight: 800;
+      }
+      .center {
+        text-align: center;
+      }
+      .note {
+        padding: 12px;
+        background: #eef0ff;
+        border-radius: 12px;
+        color: #4055d8;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .toast {
+        padding: 12px 20px;
+        background: #17233b;
+        color: white;
+        text-align: center;
+        font-size: 13px;
+        display: none;
+      }
+      .toast.visible {
+        display: block;
+      }
+      .empty {
+        padding: 24px;
+        text-align: center;
+      }
+      .reading {
+        font-size: 36px;
+        color: #4055d8;
+        margin-bottom: 12px;
+      }
+      @media (max-width: 520px) {
+        body {
+          background: #f5f6fa;
+        }
+        .intro {
+          margin: 18px auto;
+        }
+        .shell {
+          margin: 0;
+          max-width: none;
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
+          min-height: 700px;
+        }
+        .screen {
+          min-height: 600px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="intro">
+      <div>
+        <h1>Estuda+ · Gustavo Gouveia</h1>
+        <p>
+          Protótipo de alta fidelidade com oito telas. Dados fictícios em memória; login, livros e
+          exportação são simulações. O aplicativo Expo contém as implementações reais.
+        </p>
+      </div>
+      <button id="reset" class="secondary">Reiniciar demonstração</button>
+    </header>
+    <main class="shell">
+      <div class="status" aria-hidden="true"><span>9:41</span><span>▂▄▆ · Wi-Fi · ▰</span></div>
+      <div id="toast" class="toast" role="status"></div>
+      <section class="screen" id="login">
+        <div class="brand">◈ estuda+</div>
+        <h2>Seu próximo passo começa aqui.</h2>
+        <p>Organize as entregas. Encontre boas leituras. Abra espaço para aprender.</p>
+        <div class="card">
+          <h3>Bem-vindo de volta</h3>
+          <form id="login-form" class="form">
+            <label>E-mail<input type="email" value="gustavo@example.com" required /></label
+            ><label
+              >Senha<input type="password" value="demonstracao" required minlength="10" /></label
+            ><button>Entrar na demonstração</button
+            ><button type="button" class="secondary" data-go="cadastro">Criar minha conta</button>
+          </form>
+        </div>
+        <p class="center">♧ Seus estudos disponíveis offline</p>
+        <p>Conta local: o cadastro e as tarefas ficam neste aparelho.</p>
+      </section>
+      <section class="screen" id="cadastro">
+        <button class="back" data-go="login">← Voltar ao login</button>
+        <h2>Um lugar para seus planos.</h2>
+        <p>Crie sua conta e organize sua rotina acadêmica.</p>
+        <div class="card">
+          <form id="register-form" class="form">
+            <label
+              >Nome<input
+                id="name"
+                required
+                minlength="2"
+                maxlength="80"
+                placeholder="Seu nome" /></label
+            ><label>E-mail<input type="email" required /></label
+            ><label
+              >Senha (mínimo 10 caracteres)<input
+                id="register-password"
+                type="password"
+                required
+                minlength="10"
+                maxlength="128" /></label
+            ><label
+              >Confirmar senha<input
+                id="confirm-password"
+                type="password"
+                required
+                minlength="10"
+                maxlength="128" /></label
+            ><button>Criar conta</button>
+          </form>
+        </div>
+        <p>
+          Este protótipo não armazena credenciais. No aplicativo, sua conta é criada apenas no
+          aparelho.
+        </p>
+      </section>
+      <section class="screen" id="inicio">
+        <div class="eyebrow">ESTUDA+ / SEU ESPAÇO DE ESTUDO</div>
+        <h2 id="greeting">Olá, Gustavo ☀</h2>
+        <p>Pequenos passos hoje. Grandes conquistas amanhã.</p>
+        <div class="card hero">
+          <span>SEU PROGRESSO</span><strong id="percent">33%</strong>
+          <p id="progress-text"></p>
+          <div class="progress"><div id="progress-bar"></div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong id="pending"></strong>Pendentes</div>
+          <div class="stat"><strong id="completed"></strong>Concluídas</div>
+          <div class="stat"><strong id="late" style="color: #b3263c"></strong>Atrasadas</div>
+        </div>
+        <button class="wide" data-new>＋ Planejar uma tarefa</button>
+        <h3>Próximas entregas</h3>
+        <div id="home-tasks"></div>
+        <button class="secondary wide" data-go="biblioteca">Explorar leituras</button>
+      </section>
+      <section class="screen" id="tarefas">
+        <h2>Suas tarefas</h2>
+        <p>Um passo de cada vez, uma entrega de cada vez.</p>
+        <button class="wide" data-new>＋ Nova tarefa</button
+        ><label
+          >Buscar por título ou disciplina<input
+            id="filter-search"
+            placeholder="Ex.: Desenvolvimento mobile"
+        /></label>
+        <div class="chips" id="filters">
+          <button class="active" data-filter="Todas">Todas</button
+          ><button data-filter="Pendentes">Pendentes</button
+          ><button data-filter="Concluídas">Concluídas</button>
+        </div>
+        <div id="task-list"></div>
+      </section>
+      <section class="screen" id="detalhes">
+        <button class="back" data-go="tarefas">← Suas tarefas</button>
+        <h2 id="detail-title"></h2>
+        <p id="detail-subject"></p>
+        <div class="card">
+          <h3>Prazo</h3>
+          <strong id="detail-date"></strong>
+          <p id="detail-status"></p>
+        </div>
+        <div class="card">
+          <h3>Anotações</h3>
+          <p id="detail-notes" style="white-space: pre-wrap"></p>
+        </div>
+        <button id="toggle" class="wide">Marcar como concluída</button
+        ><button id="edit" class="secondary wide">Editar tarefa</button
+        ><button id="delete" class="danger wide">Excluir tarefa</button>
+      </section>
+      <section class="screen" id="editor">
+        <button class="back" data-go="tarefas">← Voltar às tarefas</button>
+        <h2 id="editor-heading">O que vamos aprender?</h2>
+        <p>Dê um nome, defina o prazo e tire a ideia do papel.</p>
+        <form id="task-form" class="form">
+          <div class="card form">
+            <label>Título<input id="title" required maxlength="120" /></label
+            ><label>Disciplina<input id="subject" required maxlength="60" /></label
+            ><label>Prazo<input id="due" type="date" required /></label
+            ><label
+              >Prioridade<select id="priority">
+                <option>Baixa</option>
+                <option selected>Média</option>
+                <option>Alta</option>
+              </select></label
+            ><label>Anotações (opcional)<textarea id="notes" maxlength="2000"></textarea></label>
+          </div>
+          <button>✓ Salvar tarefa</button>
+        </form>
+      </section>
+      <section class="screen" id="biblioteca">
+        <h2>Biblioteca</h2>
+        <p>Encontre uma leitura para o seu próximo aprendizado.</p>
+        <div class="card">
+          <form id="book-form" class="form">
+            <label
+              >Título, autor ou assunto<input
+                id="book-query"
+                value="programação"
+                required
+                minlength="2"
+                maxlength="100" /></label
+            ><button>⌕ Buscar livros</button>
+          </form>
+          <p>Catálogo da Open Library. Buscas recentes ficam disponíveis offline.</p>
+        </div>
+        <div class="note">
+          Neste protótipo, a busca mostra uma obra fictícia. A consulta à API é executada no
+          aplicativo nativo.
+        </div>
+        <div class="card hide" id="book-result">
+          <div class="reading">▤</div>
+          <h3>Introdução à programação</h3>
+          <p>Autoria demonstrativa · 2026</p>
+          <button id="book-task" class="secondary">＋ Criar tarefa de leitura</button>
+        </div>
+      </section>
+      <section class="screen" id="perfil">
+        <h2>Seu perfil</h2>
+        <p>Seu espaço, seus dados, seu ritmo.</p>
+        <div class="card center">
+          <div class="avatar" id="avatar">G</div>
+          <h3 id="profile-name">Gustavo Gouveia</h3>
+          <p>Conta de demonstração</p>
+        </div>
+        <div class="card">
+          <h3>Leve seus planos com você</h3>
+          <p>Exporte suas tarefas em JSON e escolha onde salvar ou compartilhar o arquivo.</p>
+          <button id="export">⇧ Exportar minhas tarefas</button>
+        </div>
+        <div class="card">
+          <h3>Privacidade e uso offline</h3>
+          <p>
+            Login, cadastro e tarefas funcionam sem internet. O catálogo precisa de conexão para
+            novas buscas. Os dados ficam no aparelho.
+          </p>
+        </div>
+        <button class="secondary wide" data-go="login">Sair da conta</button>
+        <p class="center">Estuda+ 1.0 · Desenvolvimento Mobile</p>
+      </section>
+      <nav class="bottom hide" id="bottom" aria-label="Navegação principal">
+        <button data-go="inicio"><span>⌂</span>Início</button
+        ><button data-go="tarefas"><span>☑</span>Tarefas</button
+        ><button data-go="biblioteca"><span>▤</span>Biblioteca</button
+        ><button data-go="perfil"><span>♙</span>Perfil</button>
+      </nav>
+    </main>
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const initialTasks = [
+        {
+          id: '1',
+          title: 'Preparar apresentação de Mobile',
+          subject: 'Desenvolvimento Mobile',
+          due: '2026-10-24',
+          priority: 'Alta',
+          notes: 'Demonstrar autenticação, CRUD, API e uso offline.',
+          done: false,
+        },
+        {
+          id: '2',
+          title: 'Revisar arquitetura de software',
+          subject: 'Engenharia de Software',
+          due: '2026-10-20',
+          priority: 'Média',
+          notes: 'Revisar separação entre telas e serviços.',
+          done: false,
+        },
+        {
+          id: '3',
+          title: 'Definir o tema do projeto',
+          subject: 'Desenvolvimento Mobile',
+          due: '2026-10-12',
+          priority: 'Baixa',
+          notes: 'Tema escolhido: produtividade estudantil.',
+          done: true,
+        },
+      ];
+      let tasks = initialTasks.map((t) => ({ ...t })),
+        selected = '1',
+        editing = null,
+        filter = 'Todas',
+        student = 'Gustavo Gouveia';
+      const format = (date) => date.split('-').reverse().join('/');
+      function toast(text) {
+        $('toast').textContent = text;
+        $('toast').classList.add('visible');
+        setTimeout(() => $('toast').classList.remove('visible'), 4000);
+      }
+      function go(screen) {
+        if (location.hash.slice(1) === screen) render();
+        else location.hash = screen;
+      }
+      function taskButtons(container, items) {
+        container.replaceChildren();
+        if (!items.length) {
+          const p = document.createElement('p');
+          p.className = 'empty';
+          p.textContent = 'Nenhuma tarefa por aqui. Crie um novo plano!';
+          container.append(p);
+        }
+        items.forEach((task) => {
+          const button = document.createElement('button');
+          button.className = 'task';
+          const strong = document.createElement('strong');
+          strong.textContent = (task.done ? '✓ ' : '') + task.title;
+          const span = document.createElement('span');
+          span.textContent =
+            task.subject +
+            ' · ' +
+            format(task.due) +
+            ' · ' +
+            (task.done ? 'Concluída' : task.priority);
+          button.append(strong, span);
+          button.onclick = () => {
+            selected = task.id;
+            go('detalhes');
+          };
+          container.append(button);
+        });
+      }
+      function render() {
+        let screen = location.hash.slice(1) || 'login';
+        if (
+          ![
+            'login',
+            'cadastro',
+            'inicio',
+            'tarefas',
+            'detalhes',
+            'editor',
+            'biblioteca',
+            'perfil',
+          ].includes(screen)
+        )
+          screen = 'login';
+        document
+          .querySelectorAll('.screen')
+          .forEach((s) => s.classList.toggle('visible', s.id === screen));
+        $('bottom').classList.toggle(
+          'hide',
+          !['inicio', 'tarefas', 'biblioteca', 'perfil'].includes(screen),
+        );
+        document
+          .querySelectorAll('#bottom button')
+          .forEach((b) => b.classList.toggle('active', b.dataset.go === screen));
+        const done = tasks.filter((t) => t.done).length,
+          percent = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
+        $('percent').textContent = percent + '%';
+        $('progress-bar').style.width = percent + '%';
+        $('progress-text').textContent =
+          done + ' de ' + tasks.length + ' tarefas concluídas. Continue no seu ritmo.';
+        $('pending').textContent = tasks.length - done;
+        $('completed').textContent = done;
+        $('late').textContent = tasks.filter((t) => !t.done && t.due < '2026-10-13').length;
+        $('greeting').textContent = 'Olá, ' + student.split(' ')[0] + ' ☀';
+        $('profile-name').textContent = student;
+        $('avatar').textContent = student[0].toUpperCase();
+        const sorted = [...tasks].sort(
+          (a, b) => Number(a.done) - Number(b.done) || a.due.localeCompare(b.due),
+        );
+        taskButtons($('home-tasks'), sorted.filter((t) => !t.done).slice(0, 3));
+        const search = $('filter-search').value.toLowerCase();
+        taskButtons(
+          $('task-list'),
+          sorted.filter(
+            (t) =>
+              (filter === 'Todas' || (filter === 'Pendentes' ? !t.done : t.done)) &&
+              (t.title + ' ' + t.subject).toLowerCase().includes(search),
+          ),
+        );
+        if (screen === 'detalhes') {
+          const t = tasks.find((t) => t.id === selected);
+          if (!t) {
+            go('tarefas');
+            return;
+          }
+          $('detail-title').textContent = t.title;
+          $('detail-subject').textContent = t.subject;
+          $('detail-date').textContent = format(t.due);
+          $('detail-status').textContent =
+            'Prioridade ' + t.priority.toLowerCase() + ' · ' + (t.done ? 'Concluída' : 'Pendente');
+          $('detail-notes').textContent = t.notes || 'Nenhuma anotação adicionada.';
+          $('toggle').textContent = t.done ? 'Reabrir tarefa' : 'Marcar como concluída';
+        }
+        window.scrollTo(0, 0);
+      }
+      function editor(task = null) {
+        editing = task?.id || null;
+        $('editor-heading').textContent = editing ? 'Ajuste seu plano' : 'O que vamos aprender?';
+        $('title').value = task?.title || '';
+        $('subject').value = task?.subject || '';
+        $('due').value = task?.due || '2026-10-24';
+        $('priority').value = task?.priority || 'Média';
+        $('notes').value = task?.notes || '';
+        go('editor');
+      }
+      document
+        .querySelectorAll('[data-go]')
+        .forEach((button) => (button.onclick = () => go(button.dataset.go)));
+      document
+        .querySelectorAll('[data-new]')
+        .forEach((button) => (button.onclick = () => editor()));
+      $('login-form').onsubmit = (e) => {
+        e.preventDefault();
+        go('inicio');
+      };
+      $('register-form').onsubmit = (e) => {
+        e.preventDefault();
+        if ($('register-password').value !== $('confirm-password').value) {
+          toast('As senhas precisam ser iguais.');
+          return;
+        }
+        student = $('name').value.trim() || 'Gustavo';
+        $('register-form').reset();
+        toast('Cadastro simulado. Entre para começar.');
+        go('login');
+      };
+      $('task-form').onsubmit = (e) => {
+        e.preventDefault();
+        if (!$('title').value.trim() || !$('subject').value.trim()) {
+          toast('Preencha título e disciplina.');
+          return;
+        }
+        const existing = tasks.find((t) => t.id === editing),
+          task = {
+            id: editing || String(Date.now()),
+            title: $('title').value.trim(),
+            subject: $('subject').value.trim(),
+            due: $('due').value,
+            priority: $('priority').value,
+            notes: $('notes').value.trim(),
+            done: existing?.done || false,
+          };
+        if (editing) tasks = tasks.map((t) => (t.id === editing ? task : t));
+        else tasks.push(task);
+        toast('Tarefa salva no protótipo.');
+        go('tarefas');
+      };
+      $('toggle').onclick = () => {
+        const t = tasks.find((t) => t.id === selected);
+        if (t) t.done = !t.done;
+        render();
+      };
+      $('edit').onclick = () => editor(tasks.find((t) => t.id === selected));
+      $('delete').onclick = () => {
+        if (confirm('Excluir tarefa? Esta ação não pode ser desfeita.')) {
+          tasks = tasks.filter((t) => t.id !== selected);
+          go('tarefas');
+        }
+      };
+      $('filter-search').oninput = () => render();
+      document.querySelectorAll('[data-filter]').forEach(
+        (button) =>
+          (button.onclick = () => {
+            filter = button.dataset.filter;
+            document
+              .querySelectorAll('[data-filter]')
+              .forEach((b) => b.classList.toggle('active', b === button));
+            render();
+          }),
+      );
+      $('book-form').onsubmit = (e) => {
+        e.preventDefault();
+        $('book-result').classList.remove('hide');
+        toast('Resultado fictício para demonstrar o fluxo.');
+      };
+      $('book-task').onclick = () =>
+        editor({
+          title: 'Ler: Introdução à programação',
+          notes: 'Autoria demonstrativa. Resultado fictício do protótipo.',
+        });
+      $('export').onclick = () =>
+        toast('No aplicativo, esta ação abre o compartilhamento nativo de um arquivo JSON.');
+      $('reset').onclick = () => {
+        tasks = initialTasks.map((t) => ({ ...t }));
+        student = 'Gustavo Gouveia';
+        filter = 'Todas';
+        $('filter-search').value = '';
+        document
+          .querySelectorAll('[data-filter]')
+          .forEach((b) => b.classList.toggle('active', b.dataset.filter === 'Todas'));
+        go('login');
+      };
+      window.addEventListener('hashchange', render);
+      render();
+    </script>
+  </body>
+</html>
