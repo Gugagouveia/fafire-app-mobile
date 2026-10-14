@@ -1,8 +1,9 @@
 import * as SQLite from 'expo-sqlite';
 import * as Crypto from 'expo-crypto';
 import * as SecureStore from 'expo-secure-store';
-import { Book, TaskInput, User, emailKey, validateAccount } from '../domain';
-import { equalHash, passwordHash } from './password';
+import { Book, TaskInput, User } from '../domain';
+import { passwordHash } from './password';
+import { AuthRepository } from './authRepository';
 import { SCHEMA } from './schema';
 import { TaskRepository } from './taskRepository';
 
@@ -22,48 +23,39 @@ export function db() {
   return database;
 }
 export async function register(name: string, email: string, password: string): Promise<User> {
-  validateAccount(name, email, password);
-  const connection = await db();
-  const normalized = emailKey(email);
-  if (await connection.getFirstAsync('SELECT id FROM users WHERE email = ?', normalized))
-    throw new Error('Este e-mail já está cadastrado neste aparelho.');
-  const user = { id: Crypto.randomUUID(), name: name.trim(), email: normalized };
-  const salt = Array.from(await Crypto.getRandomBytesAsync(32), (byte) =>
-    byte.toString(16).padStart(2, '0'),
-  ).join('');
-  const hash = await passwordHash(password, salt);
-  await connection.runAsync(
-    'INSERT INTO users (id,name,email,salt,hash) VALUES (?,?,?,?,?)',
-    user.id,
-    user.name,
-    user.email,
-    salt,
-    hash,
+  return (await authRepository()).register(name, email, password);
+}
+async function authRepository() {
+  return new AuthRepository(
+    await db(),
+    SecureStore,
+    () => Crypto.randomUUID(),
+    async () =>
+      Array.from(await Crypto.getRandomBytesAsync(32), (byte) =>
+        byte.toString(16).padStart(2, '0'),
+      ).join(''),
+    passwordHash,
   );
-  return user;
 }
 let failedLogins = 0;
 let lockedUntil = 0;
 export async function login(email: string, password: string): Promise<User> {
   if (Date.now() < lockedUntil)
     throw new Error('Muitas tentativas. Aguarde um minuto antes de tentar novamente.');
-  const connection = await db();
-  const row = await connection.getFirstAsync<User & { salt: string; hash: string }>(
-    'SELECT * FROM users WHERE email = ?',
-    emailKey(email),
-  );
-  const hash = await passwordHash(password, row?.salt ?? '00000000000000000000000000000000');
-  if (!row || !equalHash(hash, row.hash)) {
+  let account: User;
+  try {
+    account = await (await authRepository()).login(email, password);
+  } catch (error) {
     failedLogins++;
     if (failedLogins >= 5) {
       lockedUntil = Date.now() + 60000;
       failedLogins = 0;
     }
-    throw new Error('E-mail ou senha incorretos.');
+    throw error;
   }
   failedLogins = 0;
-  await SecureStore.setItemAsync(SESSION, row.id);
-  return { id: row.id, name: row.name, email: row.email };
+  await SecureStore.setItemAsync(SESSION, account.id);
+  return account;
 }
 export async function restoreSession() {
   const id = await SecureStore.getItemAsync(SESSION);
